@@ -14,5 +14,12 @@ npm install
 node my-bot.js
 ```
 
+invite bot ke server
+klik [disini](https://discordapp.com/oauth2/authorize?client_id=582242060397051917&scope=bot)
+
+## Note
+
+Project masih dalam pengerjaan, 
+
 ## Author
 malingayam#4184 @Discord
