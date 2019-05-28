@@ -1,5 +1,10 @@
 const Discord = require('discord.js');
+const dataMessage = require('./message.json');
 const bot = new Discord.Client();
+bot.on("ready", () => {
+    console.log('masuk');
+});
+
 // message after invited
 bot.on("guildCreate", guild => {
     let channelID;
@@ -17,23 +22,22 @@ bot.on("guildCreate", guild => {
     channel.send(`Hello sobat-sobat misqinku!`);
     channel.send('Assalamualaikum');
     channel.send('gak jawab pki');
+    
+    
 });
-
-bot.on("message", (message) => {
-    let prefix = 'bang';
-    if (message.content === 'cek') {
-        message.reply('oke mantap');
-    }
-    if (message.content === prefix + ' gelut kuy' ||
-    message.content === prefix.toLowerCase + ' gelut kuy' ) {
-        message.channel.reply('kuy!');
-    }
-}
-)
+// kondisi kalo ada pesan
+bot.on('message', message => {
+    var prefix = 'bang';
+    dataMessage.forEach(msg => {
+        var pesan = prefix +' '+ msg.msg;
+        if (message.content === pesan) {
+            message.reply(msg.reply);
+        } 
+    });
+})
 
 // Get your bot's secret token from:
 // https://discordapp.com/developers/applications/
 // Click on your application -> Bot -> Token -> "Click to Reveal Token"
 bot_secret_token = "NTgyMjQyMDYwMzk3MDUxOTE3.XOq_pQ.LAPntgRCPT9e1JE4cVbhJW66mwk"
-
 bot.login(bot_secret_token)
