@@ -14,12 +14,11 @@ npm install
 node my-bot.js
 ```
 
-invite bot ke server
-klik [disini](https://discordapp.com/oauth2/authorize?client_id=582242060397051917&scope=bot)
-
-## Note
-
-Project masih dalam pengerjaan, 
+## Update
+[15 November 2019]
+1. Protect token pake config.json. File config.json akan diabaikan oleh git karena masuk ke dalam gitignore.
+2. Random Quote.
+3. Gambar Kucing.
 
 ## Author
 malingayam#4184 @Discord
