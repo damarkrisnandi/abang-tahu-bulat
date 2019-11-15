@@ -6,7 +6,7 @@ const axios = require('axios');
 const bot = new Discord.Client();
 bot.on("ready", async () => {
     console.log('masuk');
-    console.log((await getQuotes()).data.value.joke);
+    console.log((await getQuotes()));
 });
 
 // message after invited
@@ -37,7 +37,7 @@ bot.on('message', message => {
         if (message.content === pesan) {
             switch (msg.msg) {
                 case 'quote':
-                    var quote = (await getQuotes()).data.value.joke;
+                    var quote = (await getQuotes());
                     message.reply(generateQuote(quote))
                     break;
 
@@ -50,10 +50,39 @@ bot.on('message', message => {
 })
 
 async function getQuotes() {
+    var num = [0,1,2,3]
+    rand = Math.round(Math.random() * (num.length - 1));
     try {
-        return await axios.get('http://api.icndb.com/jokes/random/')
+        switch (rand) {
+            case 0:
+                console.log('http://api.icndb.com/jokes/random/');
+                return (await axios.get('http://api.icndb.com/jokes/random/')).data.value.joke;       
+                break;
+            case 1:
+                console.log('https://geek-jokes.sameerkumar.website/api');
+                return (await axios.get('https://geek-jokes.sameerkumar.website/api')).data;       
+                break;
+            case 2:
+                console.log('https://api.tronalddump.io/random/quote');
+                    return (await axios.get('https://api.tronalddump.io/random/quote')).data.value;       
+                    break;
+            case 3:
+                console.log('https://api.quotable.io/random');
+                    var quoteData = (await axios.get('https://api.quotable.io/random')).data;
+                    return quoteData.content + ' - ' + quoteData.author;       
+                    break;
+            case 3:
+                console.log('https://api.quotable.io/random');
+                    return (await axios.get('https://api.quotable.io/random')).data.value;       
+                    break;
+            default:
+                return (await axios.get('http://api.icndb.com/jokes/random/')).data.value.joke;
+                break;
+        }
+        
     } catch (error) {
-        console.error(error)
+        console.log(error);
+        return (error)
     }
 }
 
