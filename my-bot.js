@@ -6,7 +6,7 @@ const axios = require('axios');
 const bot = new Discord.Client();
 bot.on("ready", async () => {
     console.log('masuk');
-    console.log((await getQuotes()));
+    console.log((await gambarKucing()));
 });
 
 // message after invited
@@ -34,11 +34,16 @@ bot.on('message', message => {
     var prefix = config.prefix;
     dataMessage.forEach(async (msg) => {
         var pesan = prefix + ' ' + msg.msg;
-        if (message.content === pesan) {
+        if (message.content.toLowerCase() === pesan) {
             switch (msg.msg) {
                 case 'quote':
                     var quote = (await getQuotes());
                     message.reply(generateQuote(quote))
+                    break;
+                
+                case 'kucing':
+                    var cat = (await gambarKucing());
+                    message.reply(generateImage(cat, "NIH GAMBAR KUCING BUAT LO", "NIH GAMBAR KUCING BUAT LO"))
                     break;
 
                 default:
@@ -86,11 +91,24 @@ async function getQuotes() {
     }
 }
 
+async function gambarKucing() {
+    return (await axios.get("https://aws.random.cat/meow?ref=apilist.fun")).data.file;
+}
+
 function generateQuote(message) {
     const embed = new Discord.RichEmbed()
         .setColor(0x00AE86)
         .setTimestamp()
         .addField("MAS BAMBANG", message)
+    return embed;
+}
+
+function generateImage(url, title, caption) {
+    const embed = new Discord.RichEmbed()
+        .setColor(0x00AE86)
+        .setTimestamp()
+        .addField(title, caption)
+        .setImage(url)
     return embed;
 }
 
