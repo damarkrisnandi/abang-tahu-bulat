@@ -1,0 +1,157 @@
+[
+    { 
+        "msg": "START",
+        "move": 0,
+        "pos": 0
+    },
+    { 
+        "msg": "oke, masih awal",
+        "move": 0,
+        "pos": 1
+    },
+    { 
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 2
+    },
+    { 
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 3
+    },
+    { 
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 4
+    },
+    { 
+        "msg": "sayang sekali, harus balik ke start",
+        "move": -5,
+        "pos": 5
+    },
+    { 
+        "msg": "masih aman",
+        "move": 0,
+        "pos": 6
+    },
+    {
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 7
+    },
+    { 
+        "msg": "meluncur gan",
+        "move": 5,
+        "pos": 8
+    },
+    {
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 9
+    },
+    {
+        "msg": "ealah mundur lagi",
+        "move": -3,
+        "pos": 10
+    },
+    {
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 11
+    },
+    {
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 12
+    },
+    {
+        "msg": "welah mantap kali",
+        "move": 8,
+        "pos": 13
+    },
+    {
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 14
+    },
+    {
+        "msg": "NOOOOOOOOO",
+        "move": -8,
+        "pos": 15
+    },
+    {
+        "msg": "gaskeun",
+        "move": 2,
+        "pos": 16
+    },
+    {
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 17
+    },
+    {
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 18
+    },
+    {
+        "msg": "maju selankah~",
+        "move": 1,
+        "pos": 19
+    },
+    {
+        "msg": "masih aman",
+        "move": 0,
+        "pos": 20
+    },
+    {
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 21
+    },
+    {
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 22
+    },
+    {
+        "msg": "masih aman",
+        "move": 0,
+        "pos": 3
+    },
+    {
+        "msg": "masih oke",
+        "move": 0,
+        "pos": 24
+    },
+    {
+        "msg": "dikit lagi lho cuk",
+        "move": -3,
+        "pos": 25
+    },
+    {
+        "msg": "start",
+        "move": 0,
+        "pos": 26
+    },
+    {
+        "msg": "astaghfirulloh",
+        "move": -4,
+        "pos": 27
+    },
+    {
+        "msg": "ayo ayo",
+        "move": 0,
+        "pos": 28
+    },
+    {
+        "msg": "waduh",
+        "move": -3,
+        "pos": 29
+    },
+    {
+        "msg": "horee dah finish",
+        "move": 0,
+        "pos": 30
+    }
+]
