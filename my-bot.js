@@ -5,8 +5,7 @@ const axios = require('axios');
 
 const bot = new Discord.Client();
 bot.on("ready", async () => {
-    console.log('masuk');
-    console.log((await gambarKucing()));
+    console.log('---ready---');
 });
 
 // message after invited

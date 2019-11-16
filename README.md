@@ -1,6 +1,6 @@
 # Abang Tahu Bulat (Discord Bot)
 
-Abang Tahu Bulat adalah project pembuatan bot discord kecil-kecilan 
+Abang Tahu Bulat adalah project pembuatan bot discord kecil-kecilan
 
 ## Installation
 
@@ -8,12 +8,26 @@ Abang Tahu Bulat adalah project pembuatan bot discord kecil-kecilan
 npm install
 ```
 
-## Usage
+## Compile
 
 ```bash
 node my-bot.js
 ```
+## Usage
+Get a quote
+```bash
+bang quote
+```
 
+Get a cat image
+```bash
+bang kucing
+```
+
+Play Ular Tangga
+```bash
+bang ular-tangga
+```
 ## Update
 [16 November 2019]
 1. Ular Tangga Game
