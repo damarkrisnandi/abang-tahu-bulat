@@ -15,6 +15,9 @@ node my-bot.js
 ```
 
 ## Update
+[16 November 2019]
+1. Ular Tangga Game
+
 [15 November 2019]
 1. Protect token pake config.json. File config.json akan diabaikan oleh git karena masuk ke dalam gitignore.
 2. Random Quote.
