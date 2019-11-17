@@ -3,9 +3,11 @@ const dataMessage = require('./message.json');
 const config = require("./config.json");
 const axios = require('axios');
 
+
 const bot = new Discord.Client();
 bot.on("ready", async () => {
     console.log('---ready---');
+    console.log(await meme());
 });
 
 // message after invited
@@ -28,9 +30,17 @@ bot.on("guildCreate", guild => {
 
 
 });
-// kondisi kalo ada pesan
+
+// VARIABEL BUAT MAIN GAME
+const ularTangga = require('./ular-tangga.json');
+const board = ularTangga;
+let player = [];
+let turn = 1;
+let playOn = false;
+
 bot.on('message', message => {
     var prefix = config.prefix;
+    var umpat = ['sat', 'ke'];
     dataMessage.forEach(async (msg) => {
         var pesan = prefix + ' ' + msg.msg;
         if (message.content.toLowerCase() === pesan) {
@@ -45,23 +55,26 @@ bot.on('message', message => {
                     message.reply(generateImage(cat, "NIH GAMBAR KUCING BUAT LO", "NIH GAMBAR KUCING BUAT LO"))
                     break;
 
+                case 'meme':
+                    var bikinMeme = (await meme());
+                    message.reply(generateImage(bikinMeme.url, 'MAS BAMBANG', bikinMeme.title));
+                    break;
+
                 default:
                     message.reply(msg.reply);
                     break;
             }
         }
     });
+
+    ularTanggaGame(message, prefix);
 });
 
-// MAIN GAME
-const ularTangga = require('./ular-tangga.json');
-const board = ularTangga;
-let player = [];
-let turn = 1;
-var playOn = false;
-bot.on('message', message => {
-   var prefix = config.prefix;
-    if (!isExistPlayer(message.author.username) && message.content.toLowerCase() === (prefix + ' ular-tangga')) {
+
+function ularTanggaGame(message, prefix) {
+    // player registration
+    if (!isExistPlayer(message.author.username) && !playOn &&
+        message.content.toLowerCase() === (prefix + ' ular-tangga')) {
         player.push({ name: message.author.username, pos: 0 });
         console.log(player);
         message.channel.send(generatePlayer(player.length, 'Terdaftar: ' + message.author.username + `, gunakan command 'ut mulai' untuk memulai permainan (player 1). Mohon tunggu pemain lain jika ingin bermain mode multiplayer`));
@@ -74,15 +87,16 @@ bot.on('message', message => {
 
     var gamePrefix = "ut";
 
-    if (!playOn && 
-        player.length > 0 && 
+    // start the game
+    if (player.length > 0 && 
         player.map(item => item.name).includes(message.author.username) &&
         message.content.toLowerCase() === (gamePrefix + ' mulai')) {
         playOn = true;
         message.channel.send(generateTurn(turn, `giliran ${player[(turn - 1) % player.length].name}, gunakan command 'ut dice'`));
     }
 
-    if (player.length > 0 && message.content.toLowerCase() === (gamePrefix + ' close')) {
+    // terminate the game
+    if (message.content.toLowerCase() === (gamePrefix + ' close')) {
         player = [];
         turn = 1;
         playOn = false;
@@ -90,6 +104,7 @@ bot.on('message', message => {
     }
 
     if (player.length > 0) {
+        // one turn cycle 
         if (player[(turn - 1) % player.length] &&
             message.author.username === player[(turn - 1) % player.length].name &&
             player[(turn - 1) % player.length].pos < board.length - 1 &&
@@ -97,7 +112,7 @@ bot.on('message', message => {
             let move = lemparDadu();
             player[(turn - 1) % player.length].pos += move;
             message.channel.send(generateTurn(turn, `${player[(turn - 1) % player.length].name} maju sebanyak ${move}. Posisi ${player[(turn - 1) % player.length].name} sekarang ada di pos no. ${player[(turn - 1) % player.length].pos} `));
-
+            
             if (player[(turn - 1) % player.length].pos < 30) {
                 message.channel.send(generateTextEmbed("KOMENTATOR ULAR TANGGA",
                     board[player[(turn - 1) % player.length].pos].msg + '. ' +
@@ -118,8 +133,8 @@ bot.on('message', message => {
             playOn = false;
         }
     }
-
-});
+    return;
+}
 
 function isExistPlayer(inputPlayer) {
     let a = false;
@@ -142,6 +157,12 @@ function cycleNumber(i, n) {
     } else {
         return 1
     }
+}
+
+
+async function meme() {
+    data = (await axios.get('https://meme-api.herokuapp.com/gimme')).data
+    return data;
 }
 
 async function getQuotes() {
