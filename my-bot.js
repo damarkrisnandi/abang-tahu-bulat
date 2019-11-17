@@ -47,17 +47,17 @@ bot.on('message', message => {
             switch (msg.msg) {
                 case 'quote':
                     var quote = (await getQuotes());
-                    message.reply(generateQuote(quote))
+                    message.channel.send(generateQuote(quote))
                     break;
 
                 case 'kucing':
                     var cat = (await gambarKucing());
-                    message.reply(generateImage(cat, "NIH GAMBAR KUCING BUAT LO", "NIH GAMBAR KUCING BUAT LO"))
+                    message.channel.send(generateImage(cat, "NIH GAMBAR KUCING BUAT LO", "NIH GAMBAR KUCING BUAT LO"))
                     break;
 
                 case 'meme':
                     var bikinMeme = (await meme());
-                    message.reply(generateImage(bikinMeme.url, 'MAS BAMBANG', bikinMeme.title));
+                    message.channel.send(generateImage(bikinMeme.url, 'MAS BAMBANG', bikinMeme.title));
                     break;
 
                 default:
