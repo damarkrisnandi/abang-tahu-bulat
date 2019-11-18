@@ -36,7 +36,7 @@ const ularTangga = require('./ular-tangga.json');
 const board = ularTangga;
 let player = [];
 let turn = 1;
-let playOn = false;
+let playOn = 0;
 
 bot.on('message', message => {
     var prefix = config.prefix;
@@ -67,52 +67,70 @@ bot.on('message', message => {
         }
     });
 
+    if (message.content.split(' ').length > 1 &&
+        message.content.split(' ')[0].toLowerCase() === prefix &&
+        umpat.includes(message.content.split(' ')[1].toLowerCase())) {
+        const react = ['JANCUK', 'NGAJAK BERANTEM?', 'GELUT KUY!', 'ANAK MANA LO!', 'DASAR JAMBAN', 'TAEK', 'BANGSAT'];
+        message.reply(react[Math.round(Math.random() * (react.length - 1))]);
+    }
+
+    // let's play the game #1
     ularTanggaGame(message, prefix);
+
+    if ((message.content.toLowerCase()).includes('bangsat')) {
+        message.reply('hey dasar goblog');
+    }
 });
 
 
 function ularTanggaGame(message, prefix) {
     // player registration
-    if (!isExistPlayer(message.author.username) && !playOn &&
+    if (!isExistPlayer(message.author.username) && playOn === 0 &&
         message.content.toLowerCase() === (prefix + ' ular-tangga')) {
         player.push({ name: message.author.username, pos: 0 });
         console.log(player);
         message.channel.send(generatePlayer(player.length, 'Terdaftar: ' + message.author.username + `, gunakan command 'ut mulai' untuk memulai permainan (player 1). Mohon tunggu pemain lain jika ingin bermain mode multiplayer`));
     } else if (isExistPlayer(message.author.username) && message.content.toLowerCase() === (prefix + ' ular-tangga')) {
-        message.channel.send(generateTextEmbed('ULAR TANGGA', 'anda sudah terdaftar sebagai player ' + 
-        (player.findIndex(p => {
-            return p.name === message.author.username;
-        }) + 1)));
+        message.channel.send(generateTextEmbed('ULAR TANGGA', 'anda sudah terdaftar sebagai player ' +
+            (player.findIndex(p => {
+                return p.name === message.author.username;
+            }) + 1)));
     }
 
     var gamePrefix = "ut";
 
-    // start the game
-    if (player.length > 0 && 
-        player.map(item => item.name).includes(message.author.username) &&
-        message.content.toLowerCase() === (gamePrefix + ' mulai')) {
-        playOn = true;
-        message.channel.send(generateTurn(turn, `giliran ${player[(turn - 1) % player.length].name}, gunakan command 'ut dice'`));
-    }
+    if (player.length > 0 && player.map(item => item.name).includes(message.author.username)) {
+        // start the game
+        if (playOn === 0 && message.content.toLowerCase() === (gamePrefix + ' mulai')) {
+            playOn += 1;
+            message.channel.send(generateTurn(turn, `giliran ${player[(turn - 1) % player.length].name}, gunakan command 'ut dice'`));
+        }
 
-    // terminate the game
-    if (message.content.toLowerCase() === (gamePrefix + ' close')) {
-        player = [];
-        turn = 1;
-        playOn = false;
-        message.channel.send(generateTextEmbed('ULAR TANGGA', 'PERMAINAN DIHENTIKAN'));
-    }
+        console.log(playOn);
+        // terminate the game
+        if (playOn === 1 && message.content.toLowerCase() === (gamePrefix + ' close')) {
+            player = [];
+            turn = 1;
+            playOn -= 1;
+            message.channel.send(generateTextEmbed('ULAR TANGGA', 'PERMAINAN DIHENTIKAN'));
+        }
 
-    if (player.length > 0) {
+        // game info
+        if (playOn === 1 &&
+            message.content.toLowerCase() === (gamePrefix + ' info')) {
+            message.channel.send(infoGame());
+        }
+
         // one turn cycle 
-        if (player[(turn - 1) % player.length] &&
+        if (playOn === 1 &&
+            player[(turn - 1) % player.length] &&
             message.author.username === player[(turn - 1) % player.length].name &&
             player[(turn - 1) % player.length].pos < board.length - 1 &&
             message.content.toLowerCase() === (gamePrefix + ' dice')) {
             let move = lemparDadu();
             player[(turn - 1) % player.length].pos += move;
             message.channel.send(generateTurn(turn, `${player[(turn - 1) % player.length].name} maju sebanyak ${move}. Posisi ${player[(turn - 1) % player.length].name} sekarang ada di pos no. ${player[(turn - 1) % player.length].pos} `));
-            
+
             if (player[(turn - 1) % player.length].pos < 30) {
                 message.channel.send(generateTextEmbed("KOMENTATOR ULAR TANGGA",
                     board[player[(turn - 1) % player.length].pos].msg + '. ' +
@@ -126,14 +144,13 @@ function ularTanggaGame(message, prefix) {
                 message.channel.send(generateTextEmbed("KOMENTATOR ULAR TANGGA", `${player[(turn - 1) % player.length].name} MENANG!!`));
                 player = [];
                 turn = 1;
-                playOn = false;
+                playOn -= 1;
             }
 
         } else {
-            playOn = false;
+            
         }
     }
-    return;
 }
 
 function isExistPlayer(inputPlayer) {
@@ -151,12 +168,24 @@ function lemparDadu() {
     return Math.round((Math.random() * 5) + 1);
 }
 
-function cycleNumber(i, n) {
-    if (i !== n) {
-        return i + 1
-    } else {
-        return 1
+function infoGame() {
+    var embed = new Discord.RichEmbed()
+    embed.title = "ULAR TANGGA";
+    embed.color = 3447003;
+    var position = ''
+    for (const p of player) {
+        if (p.pos === Math.max(player.map(item => item.pos))) {
+            position = 'Saat ini masih memimpin permainan.'
+        }
+        embed.fields.push(
+            {
+                name: `Player ${(player.indexOf(p) + 1)} (${p.name})`,
+                value: `berada di pos nomer ${p.pos}. ${position}`
+            }
+        )
     }
+
+    return embed;
 }
 
 
@@ -225,7 +254,8 @@ function generateTextEmbed(title, detail) {
     const embed = new Discord.RichEmbed()
         .setColor(0x00AE86)
         .setTimestamp()
-        .addField(title, detail)
+        .setTitle(title)
+        .setDescription(detail)
     return embed;
 }
 
@@ -233,7 +263,8 @@ function generateImage(url, title, caption) {
     const embed = new Discord.RichEmbed()
         .setColor(0x00AE86)
         .setTimestamp()
-        .addField(title, caption)
+        .setTitle(title)
+        .setDescription(caption)
         .setImage(url)
     return embed;
 }
