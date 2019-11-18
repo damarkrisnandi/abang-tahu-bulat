@@ -7,7 +7,6 @@ const axios = require('axios');
 const bot = new Discord.Client();
 bot.on("ready", async () => {
     console.log('---ready---');
-    console.log(await meme());
 });
 
 // message after invited
@@ -88,7 +87,6 @@ function ularTanggaGame(message, prefix) {
     if (!isExistPlayer(message.author.username) && playOn === 0 &&
         message.content.toLowerCase() === (prefix + ' ular-tangga')) {
         player.push({ name: message.author.username, pos: 0 });
-        console.log(player);
         message.channel.send(generatePlayer(player.length, 'Terdaftar: ' + message.author.username + `, gunakan command 'ut mulai' untuk memulai permainan (player 1). Mohon tunggu pemain lain jika ingin bermain mode multiplayer`));
     } else if (isExistPlayer(message.author.username) && message.content.toLowerCase() === (prefix + ' ular-tangga')) {
         message.channel.send(generateTextEmbed('ULAR TANGGA', 'anda sudah terdaftar sebagai player ' +
@@ -106,7 +104,6 @@ function ularTanggaGame(message, prefix) {
             message.channel.send(generateTurn(turn, `giliran ${player[(turn - 1) % player.length].name}, gunakan command 'ut dice'`));
         }
 
-        console.log(playOn);
         // terminate the game
         if (playOn === 1 && message.content.toLowerCase() === (gamePrefix + ' close')) {
             player = [];
@@ -200,24 +197,19 @@ async function getQuotes() {
     try {
         switch (rand) {
             case 0:
-                console.log('http://api.icndb.com/jokes/random/');
                 return (await axios.get('http://api.icndb.com/jokes/random/')).data.value.joke;
                 break;
             case 1:
-                console.log('https://geek-jokes.sameerkumar.website/api');
                 return (await axios.get('https://geek-jokes.sameerkumar.website/api')).data;
                 break;
             case 2:
-                console.log('https://api.tronalddump.io/random/quote');
                 return (await axios.get('https://api.tronalddump.io/random/quote')).data.value;
                 break;
             case 3:
-                console.log('https://api.quotable.io/random');
                 var quoteData = (await axios.get('https://api.quotable.io/random')).data;
                 return quoteData.content + ' - ' + quoteData.author;
                 break;
             case 3:
-                console.log('https://api.quotable.io/random');
                 return (await axios.get('https://api.quotable.io/random')).data.value;
                 break;
             default:
@@ -236,12 +228,9 @@ async function gambarKucing() {
 }
 
 function generateQuote(message) {
-    const embed = new Discord.RichEmbed()
-        .setColor(0x00AE86)
-        .setTimestamp()
-        .addField("MAS BAMBANG", message)
-    return embed;
+    return generateTextEmbed("MAS BAMBANG", message);
 }
+
 function generatePlayer(num, name) {
     return generateTextEmbed("Player " + num, name)
 }
