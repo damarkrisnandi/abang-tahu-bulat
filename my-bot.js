@@ -76,6 +76,9 @@ bot.on('message', message => {
     // let's play the game #1
     ularTanggaGame(message, prefix);
 
+    // let's play the game #2
+    quizGame(message, prefix);
+
     if ((message.content.toLowerCase()).includes('bangsat')) {
         message.reply('hey dasar goblog');
     }
@@ -83,17 +86,7 @@ bot.on('message', message => {
 
 
 function ularTanggaGame(message, prefix) {
-    // player registration
-    if (!isExistPlayer(message.author.username) && playOn === 0 &&
-        message.content.toLowerCase() === (prefix + ' ular-tangga')) {
-        player.push({ name: message.author.username, pos: 0 });
-        message.channel.send(generatePlayer(player.length, 'Terdaftar: ' + message.author.username + `, gunakan command 'ut mulai' untuk memulai permainan (player 1). Mohon tunggu pemain lain jika ingin bermain mode multiplayer`));
-    } else if (isExistPlayer(message.author.username) && message.content.toLowerCase() === (prefix + ' ular-tangga')) {
-        message.channel.send(generateTextEmbed('ULAR TANGGA', 'anda sudah terdaftar sebagai player ' +
-            (player.findIndex(p => {
-                return p.name === message.author.username;
-            }) + 1)));
-    }
+    playerRegistration(message, prefix, 'ular-tangga', `gunakan command 'ut mulai' untuk memulai permainan (player 1). Mohon tunggu pemain lain jika ingin bermain mode multiplayer`);
 
     var gamePrefix = "ut";
 
@@ -150,6 +143,26 @@ function ularTanggaGame(message, prefix) {
     }
 }
 
+function quizGame(message, prefix) {
+    playerRegistration(message, prefix, 'quiz', `gunakan command 'qz mulai' untuk memulai permainan (player 1). Mohon tunggu pemain lain jika ingin bermain mode multiplayer`);
+    const gamePrefix = 'qz';
+}
+
+function playerRegistration(message, prefix, command, resp) {
+    var games = ['ular-tangga', 'quiz']
+    // player registration
+    if (!isExistPlayer(message.author.username) && playOn === 0 &&
+        message.content.split(' ')[0].toLowerCase() === (prefix) &&
+        message.content.split(' ')[1].toLowerCase() === command) {
+        player.push({ name: message.author.username, pos: 0 });
+        message.channel.send(generatePlayer(player.length, 'Terdaftar: ' + message.author.username + `, ` + resp ));
+    } else if (isExistPlayer(message.author.username) && message.content.toLowerCase() === (prefix + ' ular-tangga')) {
+        message.channel.send(generateTextEmbed('GAME MESSAGE', 'anda sudah terdaftar sebagai player ' +
+            (player.findIndex(p => {
+                return p.name === message.author.username;
+            }) + 1)));
+    }
+}
 function isExistPlayer(inputPlayer) {
     let a = false;
     for (const p of player) {
@@ -185,6 +198,16 @@ function infoGame() {
     return embed;
 }
 
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
 
 async function meme() {
     data = (await axios.get('https://meme-api.herokuapp.com/gimme')).data
