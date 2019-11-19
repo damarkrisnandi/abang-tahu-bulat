@@ -30,5 +30,13 @@
     {
         "msg": "meme",
         "reply": ""
+    },
+    {
+        "msg": "beli tahu",
+        "reply": "gak jual tahu gan"
+    },
+    {
+        "msg": "beli tahu bulat",
+        "reply": "gak jual tahu bulat gan"
     }
 ]

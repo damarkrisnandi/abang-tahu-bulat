@@ -151,16 +151,22 @@ function quizGame(message, prefix) {
 function playerRegistration(message, prefix, command, resp) {
     var games = ['ular-tangga', 'quiz']
     // player registration
-    if (!isExistPlayer(message.author.username) && playOn === 0 &&
+    try {
+        if (!isExistPlayer(message.author.username) && playOn === 0 &&
         message.content.split(' ')[0].toLowerCase() === (prefix) &&
         message.content.split(' ')[1].toLowerCase() === command) {
         player.push({ name: message.author.username, pos: 0 });
         message.channel.send(generatePlayer(player.length, 'Terdaftar: ' + message.author.username + `, ` + resp ));
-    } else if (isExistPlayer(message.author.username) && message.content.toLowerCase() === (prefix + ' ular-tangga')) {
+    } else if (isExistPlayer(message.author.username) && 
+        message.content.split(' ')[0].toLowerCase() === (prefix) &&
+        message.content.split(' ')[1].toLowerCase() === command) {
         message.channel.send(generateTextEmbed('GAME MESSAGE', 'anda sudah terdaftar sebagai player ' +
             (player.findIndex(p => {
                 return p.name === message.author.username;
             }) + 1)));
+    }
+    } catch (error) {
+        console.log(error);
     }
 }
 function isExistPlayer(inputPlayer) {
