@@ -153,13 +153,11 @@ function playerRegistration(message, prefix, command, resp) {
     // player registration
     try {
         if (!isExistPlayer(message.author.username) && playOn === 0 &&
-        message.content.split(' ')[0].toLowerCase() === (prefix) &&
-        message.content.split(' ')[1].toLowerCase() === command) {
+        message.content.toLowerCase() === `${prefix} ${command}`) {
         player.push({ name: message.author.username, pos: 0 });
         message.channel.send(generatePlayer(player.length, 'Terdaftar: ' + message.author.username + `, ` + resp ));
     } else if (isExistPlayer(message.author.username) && 
-        message.content.split(' ')[0].toLowerCase() === (prefix) &&
-        message.content.split(' ')[1].toLowerCase() === command) {
+        message.content.toLowerCase() === `${prefix} ${command}`) {
         message.channel.send(generateTextEmbed('GAME MESSAGE', 'anda sudah terdaftar sebagai player ' +
             (player.findIndex(p => {
                 return p.name === message.author.username;
